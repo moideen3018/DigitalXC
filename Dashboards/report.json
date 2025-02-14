@@ -1,0 +1,79 @@
+{
+    "exported_dashboards": [
+      {
+        "dashboard_title": "Ticket Management Dashboard",
+        "position": {
+          "type": "GRID",
+          "children": [
+            {
+              "type": "ROW",
+              "id": "row1",
+              "children": [
+                {"type": "CHART", "chart_id": "ticket_volume_trend"},
+                {"type": "CHART", "chart_id": "resolution_time_by_category"}
+              ]
+            },
+            {
+              "type": "ROW",
+              "id": "row2",
+              "children": [
+                {"type": "CHART", "chart_id": "closure_rate_by_assigned_group"},
+                {"type": "CHART", "chart_id": "ticket_backlog_by_priority"}
+              ]
+            }
+          ]
+        },
+        "slices": [
+          {
+            "slice_name": "Ticket Volume Trend",
+            "viz_type": "line",
+            "datasource_id": 1, 
+            "datasource_type": "table",
+            "metrics": [{"expression": "COUNT(*)", "label": "Number of Tickets"}],
+            "dimensions": ["created_date"], 
+            "groupby": ["created_date"],
+            "time_range_endpoints": ["inclusive", "exclusive"],
+            "time_grain": "P1D", 
+            "query_mode": "aggregate",
+            "slice_id": "ticket_volume_trend"
+          },
+          {
+            "slice_name": "Resolution Time by Category",
+            "viz_type": "bar",
+            "datasource_id": 1, 
+            "datasource_type": "table",
+            "metrics": [{"expression": "AVG(resolution_time)", "label": "Average Resolution Time"}], 
+            "dimensions": ["category"], 
+            "query_mode": "aggregate",
+            "slice_id": "resolution_time_by_category"
+          },
+          {
+            "slice_name": "Closure Rate by Assigned Group",
+            "viz_type": "pie",
+            "datasource_id": 1, 
+            "datasource_type": "table",
+            "metrics": [{"expression": "SUM(CASE WHEN status = 'Closed' THEN 1 ELSE 0 END) * 100.0 / COUNT(*)", "label": "Closure Rate"}], // Replace 'status'
+            "dimensions": ["assigned_group"], 
+            "query_mode": "aggregate",
+            "slice_id": "closure_rate_by_assigned_group"
+          },
+          {
+            "slice_name": "Ticket Backlog by Priority",
+            "viz_type": "table",
+            "datasource_id": 1, 
+            "datasource_type": "table",
+            "metrics": [{"expression": "COUNT(*)", "label": "Number of Open Tickets"}],
+            "dimensions": ["priority"], 
+            "filters": [{"col": "status", "op": "==", "val": "Open"}], 
+            "query_mode": "aggregate",
+            "slice_id": "ticket_backlog_by_priority"
+          }
+        ],
+        "dashboard_metadata": {
+          "created_by": "mohaideen",
+          "updated_by": "mohaideen",
+          "created_on": "2025-02-14T12:00:00.000Z", 
+          "updated_on": "2025-02-14T12:00:00.000Z" 
+      }
+    ]
+  }
